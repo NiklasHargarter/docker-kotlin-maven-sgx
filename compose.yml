@@ -1,0 +1,8 @@
+services:
+  java:
+    image: kotlin-sgx:latest
+    build: .
+    devices:
+      - "/dev/sgx/enclave:/dev/sgx/enclave"
+      - "/dev/sgx/enclave:/dev/sgx_enclave"
+      - "/dev/sgx_provision:/dev/sgx_provision"

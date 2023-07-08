@@ -1,0 +1,27 @@
+loader.entrypoint = "file:{{ gramine.libos }}"
+libos.entrypoint = "/usr/lib/jvm/java-17-openjdk-amd64/bin/java"
+loader.log_level = "{{ log_level }}"
+loader.argv_src_file = "file:/app/jvm_args.txt"
+
+loader.env.LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}"
+
+sgx.debug = false
+sgx.thread_num = 16
+sgx.enclave_size = "1G"
+
+sgx.trusted_files = [
+  "file:{{ gramine.libos }}",
+  "file:{{ gramine.runtimedir() }}/",
+  "file:{{ arch_libdir }}/",
+  "file:/usr/lib/jvm/java-17-openjdk-amd64/",
+  "file:/app/enclave.jar",
+  "file:/app/jvm_args.txt",
+]
+
+fs.mounts = [
+  { path = "/lib",                                      uri = "file:{{ gramine.runtimedir() }}" },
+  { path = "{{ arch_libdir }}",                         uri = "file:{{ arch_libdir }}" },
+  { path = "/usr/{{ arch_libdir }}",                    uri = "file:/usr/{{ arch_libdir }}" },
+  { path = "/usr/lib/jvm/java-17-openjdk-amd64",        uri = "file:/usr/lib/jvm/java-17-openjdk-amd64" },
+  { path = "/app/enclave.jar",                          uri = "file:/app/enclave.jar" },
+]
